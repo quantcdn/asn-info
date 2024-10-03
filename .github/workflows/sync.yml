@@ -25,6 +25,7 @@ jobs:
         upstream_repository: ipverse/asn-info
         upstream_branch: master
         target_branch: master
+        git_pull_args: --merge
 
     # Step 3: Display a message if 'sync' step had new commits (simple test)
     - name: Check for new commits
