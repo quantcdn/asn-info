@@ -23,7 +23,8 @@ Available formats: JSON and CSV
       "description": "INTEC Inc.",
       "countryCode": "JP",
       "country": "Japan",
-      "origin": "authoritative"
+      "origin": "authoritative",
+      "lastAnnounced": "2026-01-04T07:48:56.025859Z"
     }
   },
   {
@@ -33,7 +34,8 @@ Available formats: JSON and CSV
       "description": "JAPAN TOBACCO INC.",
       "countryCode": "JP",
       "country": "Japan",
-      "origin": "authoritative"
+      "origin": "authoritative",
+      "lastAnnounced": null
     }
   }
 ]
@@ -73,6 +75,7 @@ asn,handle,description,country-code
   - `inferred`: Inferred from routing information; may be inaccurate
   - `overlaid`: Metadata overlay from [as-overlay](https://github.com/ipverse/as-overlay) applied
   - `none`: No metadata available
+- **lastAnnounced**: ISO 8601 timestamp (UTC) when the AS was last seen announcing prefixes (may be `null` for inactive ASNs)
 
 ## Update notes
 
@@ -111,7 +114,7 @@ Or just clone the repo if that's your thing.
 
 ## Questions or issues?
 
-Head over to the [feedback repo](https://github.com/ipverse/feedback) if you have questions, issues, or suggestions.
+Head over to the [feedback repository](https://github.com/ipverse/feedback) if you have questions, issues, or suggestions.
 
 ## License
 
