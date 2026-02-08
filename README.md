@@ -19,6 +19,7 @@ Perfect for offline lookups, network analysis, threat intelligence, or any proje
 
 ## Update notes
 
+- **2026-02-08**: Added `category` (e.g. `isp`, `hosting`, `business`) and `networkRole` (e.g. `tier1_transit`, `stub`) fields to AS metadata
 - **2026-01-27**: Added `providerAsns` field with list of upstream transit provider ASNs
 - **2026-01-18**: **Breaking change:** Replaced `upstreams`/`downstreams` with `providers`/`customers`/`peers` to accurately distinguish transit relationships from peering. Added `degree` and `reach` fields.
 - **2026-01-08**: Added `registered` field (RIR registration date), `stats` section (prefix and connectivity statistics), and moved `lastAnnounced` to top level.
@@ -41,6 +42,8 @@ JSON (~55-60 MB) and CSV (~6 MB)
       "countryCode": "JP",
       "country": "Japan",
       "origin": "authoritative",
+      "category": "business",
+      "networkRole": "stub",
       "registered": "1997-03-14T00:00:00Z"
     },
     "stats": {
@@ -73,6 +76,8 @@ JSON (~55-60 MB) and CSV (~6 MB)
       "countryCode": "JP",
       "country": "Japan",
       "origin": "authoritative",
+      "category": null,
+      "networkRole": null,
       "registered": "1997-03-14T00:00:00Z"
     },
     "stats": null,
@@ -115,6 +120,19 @@ asn,handle,description,country-code
   - `inferred`: Inferred from routing information; may be inaccurate
   - `overlaid`: Metadata overlay from [as-overlay](https://github.com/ipverse/as-overlay) applied
   - `none`: No metadata available
+- **category**: AS classification; `null` if unclassified
+  - `isp`: Internet service provider
+  - `hosting`: Hosting or content provider
+  - `business`: Enterprise or non-profit organization
+  - `education_research`: Educational or research institution
+  - `government`: Government entity
+- **networkRole**: Network role based on connectivity characteristics; `null` if unknown
+  - `tier1_transit`: Tier 1 transit provider (settlement-free global reach)
+  - `major_transit`: Major transit provider
+  - `midsize_transit`: Mid-size transit provider
+  - `access_provider`: Access/eyeball network
+  - `content_network`: Content delivery network
+  - `stub`: Stub AS (no transit customers)
 - **registered**: RIR registration date (time normalized to 00:00:00Z); `null` for inferred ASNs
 - **stats**: Prefix and connectivity statistics; `null` for ASNs without route collector data
   - **stats.ipv4.prefixes**: Number of IPv4 prefixes announced
