@@ -19,7 +19,7 @@ Perfect for offline lookups, network analysis, threat intelligence, or any proje
 
 ## Update notes
 
-- **2026-02-08**: Added `category` (e.g. `isp`, `hosting`, `business`) and `networkRole` (e.g. `tier1_transit`, `stub`) fields to AS metadata
+- **2026-02-08**: Added `category` (e.g. `isp`, `hosting`, `government_admin`) and `networkRole` (e.g. `tier1_transit`, `stub`) fields to AS metadata
 - **2026-01-27**: Added `providerAsns` field with list of upstream transit provider ASNs
 - **2026-01-18**: **Breaking change:** Replaced `upstreams`/`downstreams` with `providers`/`customers`/`peers` to accurately distinguish transit relationships from peering. Added `degree` and `reach` fields.
 - **2026-01-08**: Added `registered` field (RIR registration date), `stats` section (prefix and connectivity statistics), and moved `lastAnnounced` to top level.
@@ -104,50 +104,86 @@ asn,handle,description,country-code
 
 ## Field descriptions
 
-### Common fields (JSON and CSV)
+### CSV fields
 
-- **asn**: Autonomous System Number
-- **handle**: Registry handle/identifier
-- **description**: Organization name or description
-- **country-code** (CSV): ISO 3166-1 alpha-2 country code (XX if unknown)
-- **countryCode** (JSON): ISO 3166-1 alpha-2 country code
+| Field | Description |
+|---|---|
+| `asn` | Autonomous System Number |
+| `handle` | Registry handle/identifier |
+| `description` | Organization name or description |
+| `country-code` | ISO 3166-1 alpha-2 country code (`XX` if unknown) |
 
-### JSON-only fields
+### JSON fields
 
-- **country**: Full country name
-- **origin**: Metadata source indicator
-  - `authoritative`: From authoritative source
-  - `inferred`: Inferred from routing information; may be inaccurate
-  - `overlaid`: Metadata overlay from [as-overlay](https://github.com/ipverse/as-overlay) applied
-  - `none`: No metadata available
-- **category**: AS classification; `null` if unclassified
-  - `isp`: Internet service provider
-  - `hosting`: Hosting or content provider
-  - `business`: Enterprise or non-profit organization
-  - `education_research`: Educational or research institution
-  - `government`: Government entity
-- **networkRole**: Network role based on connectivity characteristics; `null` if unknown
-  - `tier1_transit`: Tier 1 transit provider (settlement-free global reach)
-  - `major_transit`: Major transit provider
-  - `midsize_transit`: Mid-size transit provider
-  - `access_provider`: Access/eyeball network
-  - `content_network`: Content delivery network
-  - `stub`: Stub AS (no transit customers)
-- **registered**: RIR registration date (time normalized to 00:00:00Z); `null` for inferred ASNs
-- **stats**: Prefix and connectivity statistics; `null` for ASNs without route collector data
-  - **stats.ipv4.prefixes**: Number of IPv4 prefixes announced
-  - **stats.ipv4.prefixesAggregated**: Number of IPv4 prefixes after aggregation
-  - **stats.ipv4.largestPrefix**: Largest IPv4 prefix announced (e.g., /13 — smaller number = larger block)
-  - **stats.ipv6.prefixes**: Number of IPv6 prefixes announced
-  - **stats.ipv6.prefixesAggregated**: Number of IPv6 prefixes after aggregation
-  - **stats.ipv6.largestPrefix**: Largest IPv6 prefix announced (e.g., /29 — smaller number = larger block)
-  - **stats.connectivity.providers**: Number of transit provider ASNs
-  - **stats.connectivity.providerAsns**: List of transit provider ASNs (enables upstream quality analysis)
-  - **stats.connectivity.customers**: Number of transit customer ASNs
-  - **stats.connectivity.peers**: Number of settlement-free peer ASNs
-  - **stats.connectivity.degree**: Total unique neighbor ASNs (providers + customers + peers)
-  - **stats.connectivity.reach**: Customer cone size (ASNs reachable via customer relationships)
-- **lastAnnounced**: ISO 8601 timestamp when AS was last seen announcing prefixes; `null` if never seen
+| Field | Description |
+|---|---|
+| `asn` | Autonomous System Number |
+| `metadata.handle` | Registry handle/identifier |
+| `metadata.description` | Organization name or description |
+| `metadata.countryCode` | ISO 3166-1 alpha-2 country code |
+| `metadata.country` | Full country name |
+| `metadata.origin` | Metadata source (see [origin values](#origin-values)) |
+| `metadata.category` | AS classification; `null` if unclassified (see [AS category and network role](#as-category-and-network-role)) |
+| `metadata.networkRole` | Network role; `null` if unknown (see [AS category and network role](#as-category-and-network-role)) |
+| `metadata.registered` | RIR registration date (time normalized to `00:00:00Z`); `null` for inferred ASNs |
+| `stats` | Prefix and connectivity statistics; `null` for ASNs without route collector data |
+| `stats.ipv4.prefixes` | Number of IPv4 prefixes announced |
+| `stats.ipv4.prefixesAggregated` | Number of IPv4 prefixes after aggregation |
+| `stats.ipv4.largestPrefix` | Largest IPv4 prefix announced (e.g. `/13` — smaller number = larger block) |
+| `stats.ipv6.prefixes` | Number of IPv6 prefixes announced |
+| `stats.ipv6.prefixesAggregated` | Number of IPv6 prefixes after aggregation |
+| `stats.ipv6.largestPrefix` | Largest IPv6 prefix announced (e.g. `/29` — smaller number = larger block) |
+| `stats.connectivity.providers` | Number of transit provider ASNs |
+| `stats.connectivity.providerAsns` | List of transit provider ASNs (enables upstream quality analysis) |
+| `stats.connectivity.customers` | Number of transit customer ASNs |
+| `stats.connectivity.peers` | Number of settlement-free peer ASNs |
+| `stats.connectivity.degree` | Total unique neighbor ASNs (providers + customers + peers) |
+| `stats.connectivity.reach` | Customer cone size (ASNs reachable via customer relationships) |
+| `lastAnnounced` | ISO 8601 timestamp when AS was last seen announcing prefixes; `null` if never seen |
+
+### Origin values
+
+| Value | Description |
+|---|---|
+| `authoritative` | From authoritative source |
+| `inferred` | Inferred from routing information; may be inaccurate |
+| `overlaid` | Metadata overlay from [as-overlay](https://github.com/ipverse/as-overlay) applied |
+| `none` | No metadata available |
+
+## AS category and network role
+
+### Category
+
+Classifies the primary function of an autonomous system.
+
+| Value | Description |
+|---|---|
+| `isp` | Internet service provider (broadband, DSL, cable, fiber, mobile) |
+| `hosting` | Hosting, cloud, or content provider |
+| `business` | Enterprise or non-profit organization |
+| `education_research` | Educational or research institution |
+| `government_admin` | Government entity or public administration |
+
+`null` when unclassified.
+
+Categorization is based on multiple signals and reflects the AS's *primary* function. It won't always be correct — many networks defy clean categorization (e.g. an ISP that also runs a hosting business, or a university with its own transit infrastructure). Take it as a useful default, not gospel. An overlay mechanism for user-supplied corrections may be added in the future.
+
+### Network role
+
+Describes the connectivity role of an autonomous system based on BGP topology.
+
+| Value | Description |
+|---|---|
+| `tier1_transit` | Tier 1 transit provider with settlement-free global reach |
+| `major_transit` | Major transit provider |
+| `midsize_transit` | Mid-size transit provider |
+| `access_provider` | Access or eyeball network |
+| `content_network` | Content delivery network |
+| `stub` | Stub AS with no transit customers |
+
+`null` when unknown.
+
+Role assignment is based on BGP connectivity metrics with opinionated thresholds. Reasonable people may disagree on where exactly to draw the line between "major" and "mid-size" transit, or when a network stops being a stub.
 
 ## How to use
 
