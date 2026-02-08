@@ -1,10 +1,5 @@
 # as-metadata (formerly asn-info)
 
-> **📢 Heads up:** This repo has been upgraded! 
-> Now includes a new **JSON format** with full country names and origin tracking, plus country codes in CSV. 
-> The repo has been renamed to `as-metadata` to reflect the richer dataset. 
-> Check out [MIGRATION.md](MIGRATION.md) for the quick migration steps (most users just need to update URLs).
-
 ## 🔍 Try it online
 
 Explore AS metadata interactively at **[Lens by ipverse](https://lens.ipverse.net)** — search IP addresses, prefixes, and autonomous systems without downloading anything.
@@ -23,7 +18,7 @@ Perfect for offline lookups, network analysis, threat intelligence, or any proje
 - **2026-01-27**: Added `providerAsns` field with list of upstream transit provider ASNs
 - **2026-01-18**: **Breaking change:** Replaced `upstreams`/`downstreams` with `providers`/`customers`/`peers` to accurately distinguish transit relationships from peering. Added `degree` and `reach` fields.
 - **2026-01-08**: Added `registered` field (RIR registration date), `stats` section (prefix and connectivity statistics), and moved `lastAnnounced` to top level.
-- **2026-01-03**: Repository renamed to `as-metadata`, CSV format changed to 4 columns (added country-code), JSON format added. See [MIGRATION.md](MIGRATION.md) for details.
+- **2026-01-03**: Repository renamed to `as-metadata`, CSV format changed to 4 columns (added country-code), JSON format added.
 - **2025-08-03**: Removed opinionated handle cleanup and removed quotes around descriptions to improve RFC4180 compliance
 - **2023-09-03**: Removed PEM certificates from description field
 
