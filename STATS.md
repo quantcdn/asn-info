@@ -2,9 +2,9 @@
 
 | Origin | Count | Description |
 |:-------|------:|:------------|
-| AUTHORITATIVE | 80 689 | Metadata from authoritative sources |
+| AUTHORITATIVE | 80 705 | Metadata from authoritative sources |
 | OVERLAID | 21 | Enhanced with [manually curated data](https://github.com/ipverse/as-metadata) |
-| INFERRED | 4 476 | Discovered from routing data |
+| INFERRED | 4 475 | Discovered from routing data |
 | MISSING | 43 | No metadata available |
 | | | |
-| **Total** | **85 229** | |
+| **Total** | **85 244** | |
