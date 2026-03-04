@@ -1,10 +1,10 @@
 # as-metadata Statistics
 
-| Origin | Count | Description |
-|:-------|------:|:------------|
-| AUTHORITATIVE | 116 344 | Metadata from authoritative sources |
-| OVERLAID | 22 | Enhanced with [manually curated data](https://github.com/ipverse/as-metadata) |
-| INFERRED | 4 498 | Discovered from routing data |
-| MISSING | 50 | No metadata available |
-| | | |
-| **Total** | **120 914** | |
+| Origin | Count | New | Description |
+|:-------|------:|----:|:------------|
+| Authoritative | 116 367 | 0 | Metadata from authoritative sources |
+| Overlaid | 22 | 0 | Enhanced with [manually curated data](https://github.com/ipverse/as-metadata) |
+| Inferred | 4 498 | 0 | Discovered from routing data |
+| Missing | 50 | 1 | No metadata available |
+| | | | |
+| **Total** | **120 937** | **1** | |
