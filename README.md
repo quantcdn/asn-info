@@ -14,6 +14,7 @@ Perfect for offline lookups, network analysis, threat intelligence, or any proje
 
 ## Update notes
 
+- **2026-03-04**: Added `metadata.lastModified` and `stats.prefixesLastModified` change-tracking timestamps; all timestamp fields now use date-only format (`yyyy-MM-dd`) to reduce file size
 - **2026-02-08**: Added `category` (e.g. `isp`, `hosting`, `government_admin`) and `networkRole` (e.g. `tier1_transit`, `stub`) fields to AS metadata
 - **2026-01-27**: Added `providerAsns` field with list of upstream transit provider ASNs
 - **2026-01-18**: **Breaking change:** Replaced `upstreams`/`downstreams` with `providers`/`customers`/`peers` to accurately distinguish transit relationships from peering. Added `degree` and `reach` fields.
@@ -39,7 +40,8 @@ JSON (~55-60 MB) and CSV (~6 MB)
       "origin": "authoritative",
       "category": "business",
       "networkRole": "stub",
-      "registered": "1997-03-14T00:00:00Z"
+      "registered": "1997-03-14",
+      "lastModified": "2026-03-01"
     },
     "stats": {
       "ipv4": {
@@ -59,9 +61,10 @@ JSON (~55-60 MB) and CSV (~6 MB)
         "peers": 3,
         "degree": 10,
         "reach": 12
-      }
+      },
+      "prefixesLastModified": "2026-03-04"
     },
-    "lastAnnounced": "2026-01-04T11:40:34.965574Z"
+    "lastAnnounced": "2026-01-04"
   },
   {
     "asn": 4712,
@@ -73,7 +76,8 @@ JSON (~55-60 MB) and CSV (~6 MB)
       "origin": "authoritative",
       "category": null,
       "networkRole": null,
-      "registered": "1997-03-14T00:00:00Z"
+      "registered": "1997-03-14",
+      "lastModified": null
     },
     "stats": null,
     "lastAnnounced": null
@@ -120,7 +124,8 @@ asn,handle,description,country-code
 | `metadata.origin` | Metadata source (see [origin values](#origin-values)) |
 | `metadata.category` | AS classification; `null` if unclassified (see [AS category and network role](#as-category-and-network-role)) |
 | `metadata.networkRole` | Network role; `null` if unknown (see [AS category and network role](#as-category-and-network-role)) |
-| `metadata.registered` | RIR registration date (time normalized to `00:00:00Z`); `null` for inferred ASNs |
+| `metadata.registered` | RIR registration date (`yyyy-MM-dd`); `null` for inferred ASNs |
+| `metadata.lastModified` | Date (`yyyy-MM-dd`) when any metadata field last changed (includes RIR data, category, network role, etc.); `null` if never announced |
 | `stats` | Prefix and connectivity statistics; `null` for ASNs without route collector data |
 | `stats.ipv4.prefixes` | Number of IPv4 prefixes announced |
 | `stats.ipv4.prefixesAggregated` | Number of IPv4 prefixes after aggregation |
@@ -134,7 +139,8 @@ asn,handle,description,country-code
 | `stats.connectivity.peers` | Number of settlement-free peer ASNs |
 | `stats.connectivity.degree` | Total unique neighbor ASNs (providers + customers + peers) |
 | `stats.connectivity.reach` | Customer cone size (ASNs reachable via customer relationships) |
-| `lastAnnounced` | ISO 8601 timestamp when AS was last seen announcing prefixes; `null` if never seen |
+| `stats.prefixesLastModified` | Date (`yyyy-MM-dd`) when announced prefixes last changed; only present when `stats` is non-null |
+| `lastAnnounced` | Date (`yyyy-MM-dd`) when AS was last seen announcing prefixes; `null` if never seen |
 
 ### Origin values
 
